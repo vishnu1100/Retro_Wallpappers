@@ -52,56 +52,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const storage = firebase.storage();
-    const galleryContainer = document.getElementById('galleryContainer');
-
-    // Load wallpapers from Firebase
-    const loadWallpapers = async () => {
-      const storageRef = storage.ref('wallpapers');
-      const images = await storageRef.listAll();
-      galleryContainer.innerHTML = ''; // Clear existing items
-      images.items.forEach(async (imageRef) => {
-        const url = await imageRef.getDownloadURL();
-        
-        const colDiv = document.createElement('div');
-        colDiv.className = 'col-xl-3 col-lg-3 col-md-4 col-6';
-
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item h-100';
-
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = imageRef.name;
-        img.className = 'img-fluid';
-
-        const downloadButton = document.createElement('button');
-        downloadButton.className = 'btn btn-download';
-        downloadButton.innerHTML = `<i class="bi bi-download"></i> Download`;
-        downloadButton.onclick = () => {
-          window.location.href = url;
-        };
-
-        galleryItem.appendChild(img);
-        galleryItem.appendChild(downloadButton);
-        colDiv.appendChild(galleryItem);
-        galleryContainer.appendChild(colDiv);
-      });
-    };
-
-    // Initial load of wallpapers
-    loadWallpapers();
-  </script>
+ 
 </body>
 
 </html>
