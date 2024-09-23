@@ -20,7 +20,8 @@
             <div class="back-side cover"></div>
         </div>
         <label class="custom-file-upload">
-            <input class="title" type="file" name="wallpaper" required /> <!-- Added name attribute -->
+        <input class="title" type="file" name="wallpaper[]" required multiple /> <!-- Updated to accept multiple files -->
+
             Choose wallpapers to upload
         </label>
     </div>
