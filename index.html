@@ -4,112 +4,104 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Aesthetic wallpapers</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
+  <title>Aesthetic Wallpapers</title>
   <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/customsnakbar.css">
-
- 
 </head>
 
 <body class="index-page">
-
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-
       <a href="" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
         <i class="bi bi-camera"></i>
         <h1 class="sitename">RETRO</h1>
       </a>
-
       <nav id="navmenu" class="navmenu">
         <ul>
-         
+          <li><a href="admin/upload.html">Upload Wallpaper</a></li>
           <li><a href="https://github.com/vishnu1100/Retro_Wallpappers" target="_blank">Contribute</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-
-      
-
     </div>
   </header>
 
   <main class="main">
-
     <!-- Hero Section -->
     <section id="hero" class="hero section">
-
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-6 text-center" data-aos="fade-up" data-aos-delay="100">
-            <h2><span> </span><span class="underlight">Collect moments, not things. But if you  collect things, make them beautiful."</span> <span> </span></h2>
-            <p>:-    Strange Pussy</p>
-            
+          <div class="col-lg-6 text-center">
+            <h2><span class="underlight">Collect moments, not things. But if you collect things, make them beautiful."</span></h2>
+            <p>:- Strange Pussy</p>
           </div>
         </div>
       </div>
-
     </section><!-- /Hero Section -->
 
     <!-- Gallery Section -->
-
     <section id="gallery" class="gallery section">
-      <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
-          <div class="row gy-4 justify-content-center">
-              <!-- Gallery items will be added here dynamically -->
-          </div>
+      <div class="container-fluid">
+        <div class="row gy-4 justify-content-center" id="galleryContainer">
+          <!-- Gallery items will be added here dynamically -->
+        </div>
       </div>
-  </section>
-  
-        
-    <!-- /Gallery Section -->
-
+    </section><!-- /Gallery Section -->
   </main>
 
-
-
-  <!-- Scroll Top -->
-  <a href="" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="line"></div>
-  </div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
-  
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
+    const app = firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const galleryContainer = document.getElementById('galleryContainer');
+
+    // Load wallpapers from Firebase
+    const loadWallpapers = async () => {
+      const storageRef = storage.ref('wallpapers');
+      const images = await storageRef.listAll();
+      galleryContainer.innerHTML = ''; // Clear existing items
+      images.items.forEach(async (imageRef) => {
+        const url = await imageRef.getDownloadURL();
+        
+        const colDiv = document.createElement('div');
+        colDiv.className = 'col-xl-3 col-lg-3 col-md-4 col-6';
+
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item h-100';
+
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = imageRef.name;
+        img.className = 'img-fluid';
+
+        const downloadButton = document.createElement('button');
+        downloadButton.className = 'btn btn-download';
+        downloadButton.innerHTML = `<i class="bi bi-download"></i> Download`;
+        downloadButton.onclick = () => {
+          window.location.href = url;
+        };
+
+        galleryItem.appendChild(img);
+        galleryItem.appendChild(downloadButton);
+        colDiv.appendChild(galleryItem);
+        galleryContainer.appendChild(colDiv);
+      });
+    };
+
+    // Initial load of wallpapers
+    loadWallpapers();
+  </script>
 </body>
 
 </html>
