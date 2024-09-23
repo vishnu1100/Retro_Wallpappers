@@ -1,17 +1,36 @@
-<?php include 'DBconnection/db_connect.php'; ?>
+<?php
+// Define the folder containing images
+$folder = "routes/uploads"; // Change to your folder name
 
+// Get all image files from the folder
+$images = glob($folder . "/*.{jpg,jpeg,png,gif}", GLOB_BRACE);
 
+$galleryImages = '';
+if (count($images) > 0) {
+    foreach ($images as $image) {
+        // Add each image to the gallery with a default width
+        $galleryImages .= '<div class="col-lg-3 col-md-4">
+                              <div class="gallery-item">
+                                  <a href="' . $image . '" download>
+                                      <img src="' . $image . '" class="img-fluid" style="width: 500px;" alt="Wallpaper"> <!-- Set width here -->
+                                  </a>
+                              </div>
+                           </div>';
+    }
+} else {
+    $galleryImages = '<p>No images found in the folder.</p>';
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Aesthetic Wallpapers</title>
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">    
 </head>
 
 <body class="index-page">
@@ -23,7 +42,6 @@
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="admin/upload.html">Upload Wallpaper</a></li>
           <li><a href="https://github.com/vishnu1100/Retro_Wallpappers" target="_blank">Contribute</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -32,7 +50,6 @@
   </header>
 
   <main class="main">
-    <!-- Hero Section -->
     <section id="hero" class="hero section">
       <div class="container">
         <div class="row justify-content-center">
@@ -42,21 +59,19 @@
           </div>
         </div>
       </div>
-    </section><!-- /Hero Section -->
+    </section>
 
     <!-- Gallery Section -->
     <section id="gallery" class="gallery section">
       <div class="container-fluid">
         <div class="row gy-4 justify-content-center" id="galleryContainer">
-          <!-- Gallery items will be added here dynamically -->
+          <?php echo $galleryImages; ?>
         </div>
       </div>
-    </section><!-- /Gallery Section -->
+    </section>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
- 
 </body>
-
 </html>
